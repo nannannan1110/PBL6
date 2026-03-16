@@ -3,10 +3,13 @@ import Recommend from '../views/Recommend';
 import Find from '../views/Find';
 import Moment from '../views/Moment';
 import Mine from '../views/Mine';
+import { SAFE_TOP, SAFE_BOTTOM } from '../constants';
 @Entry
 @Component
 
 struct Index {
+  @StorageProp(SAFE_TOP) safeTop: number = 0;
+  @StorageProp(SAFE_BOTTOM) safeBottom: number = 0;
   @State isActive: string = 'recommend';
   tabData: TabType[] = [
     { icon: $r('app.media.ic_recommend'), text: '推荐', name: 'recommend' },
@@ -29,10 +32,12 @@ struct Index {
             Mine()
           }
         }
+        .padding({ top: this.safeTop })
         .backgroundColor('#131215')
         .tabBar(this.tabBarBuilder(item))
       })
     }
+    .padding({ bottom: this.safeBottom })
     .backgroundColor('#3b3f42')
     .onChange((index: number) => {
       this.isActive = this.tabData[index].name;
