@@ -1,23 +1,22 @@
 import { getSongList } from '../apis';
 import { SongItemType } from '../models';
+import { router } from '@kit.ArkUI';
 
 @Component
 export default struct Find {
-  // 保存请求数据
   @State songs: SongItemType[] = [];
+  router = this.getUIContext().getRouter();
 
-  // 页面显示前请求数据
   async aboutToAppear() {
     try {
       this.songs = await getSongList() as SongItemType[];
     } catch (error) {
-      console.error('获取歌曲列表失败', JSON.stringify(error));
+      console.error('获取歌曲失败', JSON.stringify(error));
     }
   }
 
   build() {
     Column() {
-      // 标题
       Text('猜你喜欢')
         .fontColor('#fff')
         .fontSize(18)
@@ -25,18 +24,15 @@ export default struct Find {
         .width('100%')
         .margin({ top: 10, bottom: 15 })
 
-      // 歌曲列表
       List() {
         ForEach(this.songs, (item: SongItemType) => {
           ListItem() {
             Row({ space: 10 }) {
-              // 封面图
               Image(item.img)
                 .width(80)
                 .aspectRatio(1)
                 .borderRadius(8)
 
-              // 标题 + 歌手
               Column({ space: 6 }) {
                 Text(item.title)
                   .fontColor('#fff')
@@ -56,13 +52,21 @@ export default struct Find {
               }
               .layoutWeight(1)
 
-              // 更多按钮
               Image($r('app.media.ic_more'))
                 .width(24)
                 .fillColor('#fff')
             }
             .width('100%')
             .margin({ bottom: 12 })
+            .onClick(() => {
+              this.router.pushUrl({
+                url: 'pages/Play',
+                params: {
+                  song: item,
+                  playList: this.songs
+                }
+              });
+            })
           }
         })
       }
