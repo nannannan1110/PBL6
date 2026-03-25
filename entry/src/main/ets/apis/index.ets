@@ -1,5 +1,4 @@
 import { http } from '@kit.NetworkKit';
-import { promptAction } from '@kit.ArkUI';
 
 const baseUrl = 'http://192.168.56.1:3000';
 
@@ -13,7 +12,8 @@ export const getData = async (path: string) => {
     return res.result;
   } catch (error) {
     req.destroy();
-    promptAction.showToast({ message: '网络请求失败' });
+    // 完全去掉弹窗，只打印日志 → 0 报错
+    console.error('网络请求失败', JSON.stringify(error));
     throw new Error(`请求失败：${error.message}`);
   }
 };
@@ -30,7 +30,10 @@ export const getRecommendList = async () => {
   return await getData('/data/recommendList');
 };
 
-// 新增：获取猜你喜欢歌曲列表
 export const getSongList = async () => {
   return await getData('/data/songList');
+};
+
+export const getMomentList = async () => {
+  return await getData('/data/momentList');
 };
