@@ -29,3 +29,8 @@ export const getDailyRecommend = async () => {
 export const getRecommendList = async () => {
   return await getData('/data/recommendList');
 };
+
+// 新增：获取猜你喜欢歌曲列表
+export const getSongList = async () => {
+  return await getData('/data/songList');
+};

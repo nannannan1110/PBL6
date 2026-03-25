@@ -20,3 +20,11 @@ export interface TabType {
   text: string;
   name: string;
 }
+
+export interface SongItemType {
+  img:string;  // 封面图
+  title:string;  // 歌曲名称
+  artist:string;  // 艺术家
+  url:string;     // 歌曲URL
+  id: string;     // 唯一标识
+}
